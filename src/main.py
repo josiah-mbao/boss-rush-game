@@ -1,36 +1,40 @@
+# src/main.py
 import pygame
+from player import Player
 
 # Initialize Pygame
 pygame.init()
 
-# Game Constants
+# Constants
 WIDTH, HEIGHT = 800, 600
 FPS = 60
 
-# Colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
-# Create the Game Window
+# Set up display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Boss Rush Game")
 
-# Clock for managing frame rate
-clock = pygame.time.Clock()
+# Load assets
+player = Player(WIDTH // 2, HEIGHT // 2)
 
-# Game Loop
+# Game loop
+clock = pygame.time.Clock()
 running = True
 while running:
-    clock.tick(FPS)  # Maintain FPS
-    screen.fill(WHITE)  # Clear screen
-
-    # Event Handling
+    clock.tick(FPS)
+    
+    # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    
+    # Get key states
+    keys = pygame.key.get_pressed()
+    player.move(keys)
+    
+    # Drawing
+    screen.fill((0, 0, 0))  # Clear screen
+    player.draw(screen)
+    pygame.display.flip()
 
-    pygame.display.flip()  # Update display
-
-# Quit Pygame
 pygame.quit()
 

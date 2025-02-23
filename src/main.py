@@ -21,16 +21,18 @@ clock = pygame.time.Clock()
 running = True
 while running:
     clock.tick(FPS)
-    
+
     # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        player.update_attack(event)  # Handle attack duration timeout
     
     # Get key states
     keys = pygame.key.get_pressed()
     player.move(keys)
-    
+    player.attack(keys)  # Trigger melee attack
+
     # Drawing
     screen.fill((0, 0, 0))  # Clear screen
     player.draw(screen)

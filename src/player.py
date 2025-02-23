@@ -16,7 +16,7 @@ class Player:
         
         # Attack properties
         self.is_attacking = False
-        self.attack_cooldown = 0.5  # Seconds
+        self.attack_cooldown = 0.25  # Seconds
         self.last_attack_time = 0
         self.attack_hitbox = None  # Stores the hitbox for an active attack
 
@@ -66,15 +66,18 @@ class Player:
         if keys[pygame.K_SPACE] and not self.is_attacking and (time.time() - self.last_attack_time > self.attack_cooldown):
             self.is_attacking = True
             self.last_attack_time = time.time()
-            
-            # Create hitbox slightly in front of the player
+        
+        # Attack hitbox
             hitbox_width = 60
             hitbox_height = 20
-            if self.rect.x >= 400:  # Facing right
-                self.attack_hitbox = pygame.Rect(self.rect.right, self.rect.y + 10, hitbox_width, hitbox_height)
-            else:  # Facing left
-                self.attack_hitbox = pygame.Rect(self.rect.left - hitbox_width, self.rect.y + 10, hitbox_width, hitbox_height)
-            
+            knockback_force = 10  # How far the player is pushed back
+
+            self.attack_hitbox = pygame.Rect(self.rect.right, self.rect.y + 10, hitbox_width, hitbox_height)
+            self.rect.x -= knockback_force  # Push player back slightly
+
+            # Prevent knockback from going off-screen
+            self.rect.x = max(0, min(self.rect.x, 800 - self.rect.width))
+
             # Simulate attack duration
             pygame.time.set_timer(pygame.USEREVENT, 200)  # Attack lasts 200ms
 

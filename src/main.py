@@ -4,6 +4,7 @@ from player import Player
 from boss import Boss
 
 # Initialize Pygame
+# Initialize Pygame
 pygame.init()
 
 # Constants
@@ -17,6 +18,7 @@ pygame.display.set_caption("Boss Rush Game")
 # Load assets
 player = Player(WIDTH // 2, HEIGHT // 2)
 boss = Boss(WIDTH // 2, HEIGHT // 4)  # Placing boss higher up
+boss.target = player  # Assign the player as the target for the boss
 
 # Game loop
 clock = pygame.time.Clock()
@@ -38,12 +40,13 @@ while running:
     # Check if the player's attack hits the boss
     player.check_attack_collision([boss])
 
+    # Update the boss
+    boss.update()
+
     # Drawing
     screen.fill((0, 0, 0))  # Clear screen
     player.draw(screen)
-    boss.update()
     boss.draw(screen)
     pygame.display.flip()
 
 pygame.quit()
-
